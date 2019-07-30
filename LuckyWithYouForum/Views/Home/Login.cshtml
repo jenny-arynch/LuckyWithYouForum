@@ -1,0 +1,171 @@
+﻿@using LuckyWithYouForum.Models
+@model UserViewModel
+@{
+   Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Log in";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+
+      <script src="https://fonts.googleapis.com/css?family=Roboto"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"></script>
+           <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
+    <link href="../../Content/LogButt.css" rel="stylesheet" />
+<style>
+
+body {
+  background-color: #ffffff;
+  font-family: 'Rubik', sans-serif;
+  font-size: 14px;
+}
+    .owl {
+        margin: inherit;
+        width: 230px;
+        height: 127px;
+        background-image: url("../../Data/HalfLucky.png")
+    }
+.owl .hand {
+  width: 34px;
+  height: 34px;
+  border-radius: 40px;
+  background-color: #472d20;
+  transform: scaleY(0.6);
+  position: absolute;
+  left: 14px;
+  bottom: -8px;
+  transition: 0.3s ease-out;
+}
+.owl .hand.password {
+  transform: translateX(42px) translateY(-15px) scale(0.7);
+}
+.owl .hand.hand-r {
+  left: 170px;
+}
+.owl .hand.hand-r.password {
+  transform: translateX(-42px) translateY(-15px) scale(0.7);
+}
+.owl .arms {
+  position: absolute;
+  top: 58px;
+  height: 41px;
+  width: 100%;
+  overflow: hidden;
+}
+.owl .arms .arm {
+  width: 40px;
+  height: 65px;
+  background-image: url("https://dash.readme.io/img/owl-login-arm.png");
+  position: absolute;
+  left: 20px;
+  top: 40px;
+  transition: 0.3s ease-out;
+}
+.owl .arms .arm.password {
+  transform: translateX(40px) translateY(-40px);
+}
+.owl .arms .arm.arm-r {
+  left: 158px;
+  transform: scaleX(-1);
+}
+.owl .arms .arm.arm-r.password {
+  transform: translateX(-40px) translateY(-40px) scaleX(-1);
+}
+.form {
+  margin: auto;
+  margin-top: -9px;
+  padding: 30px;
+  background-color: #008ee8;
+  width: 250px;
+}
+.form .control {
+  margin-bottom: 10px;
+  position: relative;
+}
+.form .control label {
+  position: absolute;
+  font-size: 16px;
+  top: 11px;
+  left: 9px;
+  color: rgba(0,0,0,0.3);
+}
+.form .control input {
+  padding: 9px 6px 9px 30px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+</style>       
+
+</head>
+    <body>
+        <div class="owl">
+
+</div>
+<div class="form">
+
+            @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+           
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <table>
+                        <tr>
+                            <td><label for="email" class="fa fa-envelope"></label></td>
+                            <td>
+                                <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.usermail, new { @class = "form-control",@Value = "jen@gmail.com" })
+
+                        @Html.ValidationMessageFor(m => m.usermail, "", new { @class = "text-danger" })
+                    </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="form-group">
+                    <table>
+                        <tr>
+                            <td>
+                    <label for="password" class="fa fa-asterisk"></label>
+                            </td>
+                            <td>
+            <div class="col-md-10">
+                        @Html.PasswordFor(m => m.password, new { @class = "form-control" ,@Value = "1234"})
+                        @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
+                    </div>
+                            </td>
+                        </tr>
+                    </table>
+        
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="כניסה" class="btn btn-default" />
+                    </div>
+                </div>
+
+            }
+
+
+</div>
+
+
+            <script>
+            $('input[type="password"]').on('focus', function () {
+                $('*').addClass('password');
+            }).on('focusout', function () {
+                $('*').removeClass('password');
+            });;
+        </script>
+    </body>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+   
+

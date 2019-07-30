@@ -1,0 +1,100 @@
+﻿@using LuckyWithYouForum.Models
+@model UserViewModel
+@{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <style>
+* {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 10px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myTable {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 12px;
+  font-family: 'Rubik', sans-serif;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 12px;
+}
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  background-color: #F4F4FF;
+}
+
+</style>
+</head>
+<body>
+    
+    @using (Html.BeginForm("IndexOptions", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+    
+    @Html.Hidden("usermail", (object)ViewBag.currentUser.usermail)
+    @Html.Hidden("countofposts", (object)ViewBag.currentUser.countofposts)
+    @Html.Hidden("data_display", (object)ViewBag.currentUser.data_display)
+    @Html.Hidden("name", (object)ViewBag.currentUser.name)
+    @Html.Hidden("password", (object)ViewBag.currentUser.password)
+    @Html.Hidden("score", (object)ViewBag.currentUser.score)
+    @Html.Hidden("typeOfCancer", (object)ViewBag.currentUser.typeOfCancer)
+
+
+        <div class="row">
+    <div class="col-md-4">
+        
+        <button name="NewPost" style="align-self:center;" class = "btn btn-primary btn-lg" type="submit">הוספת הודעה חדשה</button>
+
+        <table class="table" id="myTable">
+            <tr class="header">
+                
+                <th style="width:60%;">תאריך</th>
+                <th style="width:60%;">נשא</th>
+                <th style="width:60%;">קטגוריה</th>
+
+            </tr>
+            @if (ViewBag.UserPosts!= null){
+            foreach(var v in ViewBag.UserPosts)
+            {       
+            
+            <tr onclick="location.href = '@(Url.Action("OpenPost","Home", new { postid=v.postid, currentUserMail=ViewBag.currentUser.usermail, password=ViewBag.currentUser.password }))'">
+
+                 
+                <td>@v.date</td>  
+                <td>@v.topic</td>  
+                <td>@v.subject</td>
+
+            </tr>
+            }
+            }
+        </table>
+
+    </div>
+    </div>
+
+        }
+    
+</body>
+</html>

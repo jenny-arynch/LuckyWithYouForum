@@ -1,0 +1,233 @@
+﻿@using LuckyWithYouForum.Models
+@model UserDiscussionViewModel
+@{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+   ViewBag.image = "../../Data/Jenny.png";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+        <link href="../scripts/w3.css" rel="stylesheet" />
+               <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
+
+   <style>
+       body {
+  margin: auto;
+
+}
+
+.sidebar {
+        grid-area: sidebar;
+    }
+
+    .content {
+        grid-area: content;
+    }
+
+    .header {
+        grid-area: header;
+    }
+
+    .footer {
+        grid-area: footer;
+    }
+    .row{
+        grid-area: row;
+    }
+
+    .wrapper {
+        align-self:center;
+        display: grid;
+        grid-gap: 5px;
+        grid-template-columns: 20% 80%;
+        grid-template-areas:
+        "....... header"
+        "footer  footer"
+        "sidebar content";
+        color: #444;
+        font-family: 'Rubik', sans-serif;
+    }
+    .wrapperdiscussion{
+        align-self:center;
+        display: grid;  
+        grid-gap: 5px;
+        grid-template-columns: 20% 80%;
+        grid-template-areas:
+        "footer  footer"
+        "sidebar content";
+        background-color: #f5f5f5;
+        color: #444;
+        font-family: 'Rubik', sans-serif;
+    }
+    .wrappersend{
+        align-self:center;
+        align-items:center;
+        align-content:center;
+        display: grid;  
+        grid-gap: 5px;
+        grid-template-columns: 100%;
+        grid-template-rows: max-content;
+        grid-template-areas:
+        "footer "
+        "content"
+        "footer";
+        background-color: #f5f5f5;
+        color: #444;
+                font-family: 'Rubik', sans-serif;
+    }
+
+.box {
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 70%;
+}
+.center {
+    margin: auto;
+    width: 95%;
+    border: 1px dotted #444;
+    padding: 10px;
+}
+.header {
+  background-color: #87CEFA;
+
+}
+.footer,sidebar {
+  background-color: #F4F4FF;
+  color: #87CEFA;
+
+}
+.content {
+  background-color: #D2D3FF;
+}
+   </style>
+
+    <style> 
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: none;
+}
+</style>
+
+    <style>
+        .date {
+  position: relative;
+  width: 70px;
+  font-family: Georgia, serif;
+  color: #999;
+  margin: 0 auto;
+ }
+ 
+.day, .month, .year {
+  position: absolute;
+  }
+ 
+.day { 
+  font-size: 30px;
+  top: 15px;
+  }
+ 
+.month { 
+  top: 0;
+  left: 0;  
+  font-size: 18px;
+  }
+ 
+.year { 
+  top: 19px;
+  right: 0;
+  font-size: 20px;
+  rotation: -90deg !important;
+  /* ** Hacks ** */
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);  
+  }
+
+    </style>
+</head>
+
+
+<body>
+   
+
+<div class="wrapper center">
+  <div class="box header">@ViewBag.PostData.subject</div>
+      <div class="box footer">@ViewBag.PostData.date
+      </div>
+  <div class="box sidebar"> @ViewBag.PostData.name
+      <br />
+      <img src=@ViewBag.image  style="width:80%;"/>
+
+      
+      count of posts: @ViewBag.PostData.countofposts
+  </div>
+  <div class="box content">@ViewBag.PostData.text
+      <br />
+      <br />
+       <p style="align-content:flex-end">count of views: @ViewBag.PostData.countofviews</p>
+
+
+  </div>
+</div>
+
+    <br />
+     @if (ViewBag.Discussions!= null){
+            foreach (var v in ViewBag.Discussions)
+            {
+    <div class="wrapperdiscussion center">
+    
+          <div class="box footer"><p style="align-self:flex-end">@v.date @v.time</p></div>
+  <div class="box sidebar">@v.name 
+      <img src=@ViewBag.image style="width:80%;" />
+      <br />
+      count of posts: @v.countofposts
+  </div>
+  <div class="box content">@v.text </div>
+  
+    <br /> 
+
+    </div>
+    }
+    }
+ 
+
+    <div class="wrappersend center">
+        @using (Html.BeginForm("AddDiscussionAndRefreshPost", "Home", FormMethod.Post))
+{    
+        @Html.Hidden("postid", (object)ViewBag.PostData.postid)
+        @Html.Hidden("usermail", (object)ViewBag.currentUser.usermail)
+        @Html.Hidden("countofposts", (object)ViewBag.currentUser.countofposts)
+        @Html.Hidden("name", (object)ViewBag.currentUser.name)
+        @Html.Hidden("password", (object)ViewBag.currentUser.password)
+        <div class="box footer"> @ViewBag.currentUser.name</div>
+        <div class="box content">   
+                                              
+             @Html.TextAreaFor(model => model.text, 10,40, htmlAttributes: new {style="width: 100%; max-width: 100%;"})</div>
+                <div class="box footer">
+                    <button class = "btn btn-primary btn-lg" type="submit">שלח</button></div>
+        }
+    </div>
+
+        
+
+    
+
+
+<script>
+$(window).bind("pageshow", function() {
+    $("#TextAreaFor").val('');
+});
+    </script>
+</body>
+</html>

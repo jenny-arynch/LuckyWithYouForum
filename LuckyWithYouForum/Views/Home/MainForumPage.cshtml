@@ -1,0 +1,132 @@
+﻿@using LuckyWithYouForum.Models
+@model UserViewModel
+@{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 10px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myTable {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 12px;
+  text-size-adjust:inherit;
+  font-family: 'Rubik', sans-serif;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 12px;
+}
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  background-color: #F4F4FF;
+}
+
+</style>
+</head>
+<body>
+    <div> 
+
+
+   <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for subject.." title="Type in a name">
+
+
+        
+        <table class="table" id="myTable">
+            <tr class="header">
+               <th style="width:20%;">משתמש</th>
+                <th style="width:20%;">תאריך</th>
+                <th style="width:20%;">קטגוריה</th>
+                <th style="width:20%;">נושא</th>
+
+            </tr>
+            @if (ViewBag.allPosts!= null){
+            foreach (var v in ViewBag.allPosts)
+            {
+             <tr onclick="location.href = '@(Url.Action("OpenPost","Home", new {postid=v.postid, currentUserMail=ViewBag.currentUser.usermail, password=ViewBag.currentUser.password}))'">
+                <td>@v.usermail</td>  
+                <td>@v.date</td>  
+                <td>@v.topic</td>  
+                <td>@v.subject</td>
+               <td style="display:none;">@v.postid</td>  
+
+            </tr>
+            }
+            }
+        </table>
+
+    </div>
+
+
+    <script>
+function myFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[3];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+
+function getId(element) {
+    //alert("row" + element.closest('tr').rowIndex);
+
+    var row = element.closest('tr').rowIndex
+
+    $.post("/Home/OpenPost", { postId: row });
+}
+
+
+
+$(document).ready(function () {
+
+    $('#example tr').click(function () {
+        var href = $(this).find("a").attr("href");
+        if (href) {
+            window.location = href;
+        }
+    });
+
+});
+
+
+
+
+</script>
+</body>
+</html>
